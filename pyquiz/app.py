@@ -68,6 +68,23 @@ def quiz():
             session['questions'].pop(0)
 
         # Check if there are more questions
+       @app.route('/quiz', methods=['GET', 'POST'])
+def quiz():
+    if 'username' not in session:
+        return redirect(url_for('home'))
+
+    if request.method == 'POST':
+        user_answer = request.form.get('answer')
+        correct_answer = session.get('correct_answer', '')
+
+        if user_answer == correct_answer:
+            session['score'] += 1
+
+        # Remove the current question from the list
+        if session['questions']:
+            session['questions'].pop(0)
+
+        # Check if there are more questions
         if session['questions']:
             return redirect(url_for('quiz'))
         else:
@@ -92,9 +109,11 @@ def quiz():
                 return render_template('quiz.html', question=current_question, score=session.get('score', 0))
             else:
                 # Handle case where "options" are missing
-                return "Error: Question data format is incorrect", 500
+                return f"Error: 'options' field is missing in question data: {current_question}", 500
         else:
-            return "Error fetching questions from The Trivia API", 500
+            # Handle API request errors
+            return f"Error fetching questions from The Trivia API. Status Code: {response.status_code}", 500
+
 
 
 @app.route('/end_quiz')
