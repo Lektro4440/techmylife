@@ -87,13 +87,13 @@ def quiz():
             current_question = question_data[0]
             if "options" in current_question:
                 session['correct_answer'] = current_question["correctAnswer"]
-                random.shuffle(current_question["options"])
+                # Shuffle answer options
+                answer_options = current_question["options"]
+                random.shuffle(answer_options)
+                return render_template('quiz.html', question=current_question, answer_options=answer_options, score=session.get('score', 0))
             else:
                 # Handle case where "options" are missing
-                session['correct_answer'] = "Answer not available"
-
-            return render_template('quiz.html', question=current_question, score=session.get('score', 0))
-
+                return "Error: Question data format is incorrect", 500
         else:
             return "Error fetching questions from The Trivia API", 500
 
@@ -124,5 +124,4 @@ def leaderboard():
     return render_template('leaderboard.html', leaderboard=leaderboard)
 
 if __name__ == '__main__':
-    initialize_database()
     app.run(debug=True)
