@@ -2,12 +2,14 @@
 <html>
 <head>
     <title>Quiz</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
     <h1>Quiz</h1>
     <p>Question:</p>
     <p>{{ question.question }}</p>
     <form method="POST">
+        {% if question.options %}
         <ul>
             {% for option in question.options %}
                 <li>
@@ -17,13 +19,12 @@
             {% endfor %}
         </ul>
         <input type="submit" value="Submit Answer">
+        {% else %}
+        <p>Answers are not available for this question.</p>
+        {% endif %}
     </form>
-    {% if options_missing %}
-    <p>Answers are not available for this question.</p>
-    {% else %}
     <p>Correct Answer: {{ question.correctAnswer }}</p>
     <p>Your Score: {{ score }}</p>
     <a href="{{ url_for('end_quiz') }}">End Quiz</a>
-    {% endif %}
 </body>
 </html>
