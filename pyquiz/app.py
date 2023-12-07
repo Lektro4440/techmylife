@@ -92,10 +92,10 @@ def quiz():
                 return render_template('quiz.html', question=current_question, score=session.get('score', 0))
             else:
                 # Handle case where "options" are missing
-                return f"Error: 'options' field is missing in question data: {current_question}", 500
+                return render_template('quiz.html', question=current_question, score=session.get('score', 0), options=["Option A", "Option B", "Option C", "Option D"])
         else:
             # Handle API request errors
-            return f"Error fetching questions from The Trivia API. Status Code: {response.status_code}", 500
+            return "Error fetching questions from The Trivia API", 500
 
 @app.route('/end_quiz')
 def end_quiz():
