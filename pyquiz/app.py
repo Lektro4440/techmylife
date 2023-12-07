@@ -87,13 +87,15 @@ def quiz():
             current_question = question_data[0]
             if "options" in current_question:
                 session['correct_answer'] = current_question["correctAnswer"]
-                random.shuffle(current_question["options"])
+                session['options'] = current_question["options"]  # Store options in the session
+                random.shuffle(session['options'])
                 return render_template('quiz.html', question=current_question, score=session.get('score', 0))
             else:
                 # Handle case where "options" are missing
                 return "Error: Question data format is incorrect", 500
         else:
             return "Error fetching questions from The Trivia API", 500
+
 
 @app.route('/end_quiz')
 def end_quiz():
