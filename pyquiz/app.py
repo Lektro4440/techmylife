@@ -68,23 +68,6 @@ def quiz():
             session['questions'].pop(0)
 
         # Check if there are more questions
-       @app.route('/quiz', methods=['GET', 'POST'])
-def quiz():
-    if 'username' not in session:
-        return redirect(url_for('home'))
-
-    if request.method == 'POST':
-        user_answer = request.form.get('answer')
-        correct_answer = session.get('correct_answer', '')
-
-        if user_answer == correct_answer:
-            session['score'] += 1
-
-        # Remove the current question from the list
-        if session['questions']:
-            session['questions'].pop(0)
-
-        # Check if there are more questions
         if session['questions']:
             return redirect(url_for('quiz'))
         else:
@@ -113,8 +96,6 @@ def quiz():
         else:
             # Handle API request errors
             return f"Error fetching questions from The Trivia API. Status Code: {response.status_code}", 500
-
-
 
 @app.route('/end_quiz')
 def end_quiz():
