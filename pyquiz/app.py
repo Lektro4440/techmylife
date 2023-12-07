@@ -88,14 +88,14 @@ def quiz():
             if "options" in current_question:
                 session['correct_answer'] = current_question["correctAnswer"]
                 random.shuffle(current_question["options"])
-                return render_template('quiz.html', question=current_question, score=session.get('score', 0))
             else:
                 # Handle case where "options" are missing
-                return render_template('quiz.html', question=current_question, score=session.get('score', 0), options_missing=True)
+                session['correct_answer'] = "Answer not available"
+
+            return render_template('quiz.html', question=current_question, score=session.get('score', 0))
 
         else:
             return "Error fetching questions from The Trivia API", 500
-
 
 @app.route('/end_quiz')
 def end_quiz():
@@ -124,4 +124,5 @@ def leaderboard():
     return render_template('leaderboard.html', leaderboard=leaderboard)
 
 if __name__ == '__main__':
+    initialize_database()
     app.run(debug=True)
