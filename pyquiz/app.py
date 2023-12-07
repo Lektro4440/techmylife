@@ -96,7 +96,6 @@ def quiz():
         else:
             return "Error fetching questions from The Trivia API", 500
 
-
 @app.route('/end_quiz')
 def end_quiz():
     # Update the leaderboard with the user's score
