@@ -2,29 +2,25 @@
 <html>
 <head>
     <title>Quiz</title>
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+    <!-- Add your HTML head content here, such as CSS links, meta tags, etc. -->
 </head>
 <body>
-    <h1>Quiz</h1>
-    <p>Question:</p>
-    <p>{{ question.question }}</p>
+    <h1>Quiz Question</h1>
     <form method="POST">
-        {% if question.options %}
-        <ul>
-            {% for option in question.options %}
-                <li>
-                    <input type="radio" name="answer" value="{{ option }}">
-                    {{ option }}
-                </li>
-            {% endfor %}
-        </ul>
-        <input type="submit" value="Submit Answer">
+        <p>{{ question.question }}</p>
+        {% if 'options' in question %}
+            <ul>
+                {% for option in question.options %}
+                    <li><input type="radio" name="answer" value="{{ option }}">{{ option }}</li>
+                {% endfor %}
+            </ul>
         {% else %}
-        <p>Answers are not available for this question.</p>
+            <label for="answer">Your Answer:</label>
+            <input type="text" id="answer" name="answer">
         {% endif %}
+        <br>
+        <input type="submit" value="Submit Answer">
     </form>
-    <p>Correct Answer: {{ question.correctAnswer }}</p>
-    <p>Your Score: {{ score }}</p>
-    <a href="{{ url_for('end_quiz') }}">End Quiz</a>
+    <p>Score: {{ score }}</p>
 </body>
 </html>
