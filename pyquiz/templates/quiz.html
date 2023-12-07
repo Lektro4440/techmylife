@@ -1,26 +1,29 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quiz App</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <title>Quiz</title>
 </head>
 <body>
-    <div class="container">
-        <h1>Quiz</h1>
-        <form method="POST" action="/quiz">
-            <p>Question:</p>
-            <p>{{ question.question }}</p>
-            <p>Options:</p>
-            <div class="options">
-                {% for option in question.options %}
-                    <button class="option" name="answer" value="{{ option }}">{{ option }}</button>
-                {% endfor %}
-            </div>
-            <p>Score: {{ score }}</p>
-            <button type="submit">Next</button>
-        </form>
-    </div>
+    <h1>Quiz</h1>
+    <p>Question:</p>
+    <p>{{ question.question }}</p>
+    <form method="POST">
+        <ul>
+            {% for option in question.options %}
+                <li>
+                    <input type="radio" name="answer" value="{{ option }}">
+                    {{ option }}
+                </li>
+            {% endfor %}
+        </ul>
+        <input type="submit" value="Submit Answer">
+    </form>
+    {% if options_missing %}
+    <p>Answers are not available for this question.</p>
+    {% else %}
+    <p>Correct Answer: {{ question.correctAnswer }}</p>
+    <p>Your Score: {{ score }}</p>
+    <a href="{{ url_for('end_quiz') }}">End Quiz</a>
+    {% endif %}
 </body>
 </html>
